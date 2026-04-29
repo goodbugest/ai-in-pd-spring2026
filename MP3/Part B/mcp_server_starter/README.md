@@ -35,7 +35,7 @@ The graded evidence is in three files:
 
 | Evidence | Where it lives |
 |----------|---------------|
-| Server log with ≥5 tool invocations | `mcp_server/logs/server.log` |
+| Server log with ≥3 tool invocations | `mcp_server/logs/server.log` |
 | 2–3 host UI screenshots showing tool calls | `mcp_server/screenshots/` |
 | Markdown export of one full host conversation | `mcp_server/conversation_export.md` |
 

@@ -37,6 +37,10 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
 )
+# FastMCP pings PyPI for version info via httpx on startup; mute that noise
+# so the log only contains MiniClaw tool calls.
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
 logger = logging.getLogger("miniclaw-mcp")
 
 # ── MCP server ──────────────────────────────────────────────────────────
