@@ -1,0 +1,54 @@
+import numpy as np
+
+# INPUT PARAMETERS
+T_input = 0.3        # Nm
+efficiency = 0.95
+stages = 2
+gear_ratio_stage = 3
+
+# UPDATED DESIGN (fix for stress)
+module = 1.5e-3      # 1.5 mm
+face_width = 12e-3   # 12 mm
+Y = 0.3              # Lewis factor
+jaw_length = 0.04    # 40 mm
+PLA_allowable = 25   # MPa
+
+# GEAR GEOMETRY
+z1 = 12
+z2 = 36
+d1 = module * z1
+d2 = module * z2
+center_distance = module * (z1 + z2) / 2
+total_ratio = gear_ratio_stage ** stages
+
+# TORQUE + FORCE
+T_output = T_input * total_ratio * (efficiency ** stages)
+F_grip = T_output / jaw_length
+
+# STRESS ANALYSIS
+pitch_radius = d2 / 2
+Ft = T_output / pitch_radius
+sigma = Ft / (face_width * module * Y)
+sigma_MPa = sigma / 1e6
+
+# OUTPUT
+print("----- GEAR PARAMETERS -----")
+print("Module (m):", module)
+print("Face Width (m):", face_width)
+print("Teeth (z1 -> z2):", z1, "->", z2)
+print("Pitch Diameters (m):", round(d1,4), ",", round(d2,4))
+print("Center Distance (m):", round(center_distance,4))
+print("Total Gear Ratio:", total_ratio)
+
+print("\n----- PERFORMANCE -----")
+print("Output Torque (Nm):", round(T_output,3))
+print("Estimated Grip Force (N):", round(F_grip,2))
+
+print("\n----- STRESS CHECK -----")
+print("Tangential Force (N):", round(Ft,2))
+print("Lewis Stress (MPa):", round(sigma_MPa,2))
+
+if sigma_MPa < PLA_allowable:
+    print("Status: SAFE (within PLA limits)")
+else:
+    print("Status: NOT SAFE (exceeds PLA limits)")
